@@ -1,0 +1,114 @@
+---
+import fetch from "node-fetch";
+import { JSDOM } from "jsdom";
+// Import the getAllArticles function from the newsArchive.js file
+import getAllArticles from "../lib/newsArchive.js";
+
+// Initialize articles variable and error flag
+let articles;
+let errorOccurred = false;
+
+try {
+	// Try to fetch all articles
+	articles = await getAllArticles();
+} catch (error) {
+	// If an error occurs, log it and set the error flag
+	console.error("Failed to get articles:", error);
+	articles = [];
+	errorOccurred = true;
+}
+async function fetchOGData(url) {
+	try {
+		const response = await fetch(url);
+		const html = await response.text();
+		const dom = new JSDOM(html);
+		const doc = dom.window.document;
+		let ogTitle =
+			doc.querySelector('meta[property="og:title"]')?.content || "New Article";
+		const ogImage = doc.querySelector('meta[property="og:image"]')?.content;
+		return { ogTitle, ogImage, url };
+	} catch (error) {
+		console.error("Error fetching OG data:", error);
+		return { ogTitle: "No title", ogImage: "No image", url };
+	}
+}
+
+async function articlesWithOGData(articles) {
+	return await Promise.all(articles.map(fetchOGData));
+}
+let allArticles = await articlesWithOGData(articles);
+---
+
+<html>
+	<head>
+		<title>Decentralized News!</title>
+		<style>
+			html {
+				font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+				font-size: 1.3em;
+				max-width: 40rem;
+				padding: 2rem;
+				margin: auto;
+				line-height: 1.5rem;
+			}
+			ul,
+			li {
+				list-style-type: none;
+				margin-bottom: 1rem;
+				padding: 0;
+			}
+			article {
+				background-color: rgba(0, 0, 0, 0.05);
+				border-radius: 1rem;
+				padding: 1rem;
+				text-align: center;
+			}
+			article:hover {
+				background-color: rgba(0, 0, 0, 0.1);
+			}
+			img {
+				max-width: 20rem;
+				border-radius: 1rem;
+			}
+			a {
+				color: #000;
+			}
+			a:hover {
+				background-color: #ccff00;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>News Articles</h1>
+		<p>This is news from <strong>the blockchain!</strong></p>
+		{
+			// If an error occurred, display an error message
+			// Otherwise, display the list of articles
+			errorOccurred ? (
+				<p>Sorry, we're unable to fetch articles at the moment.</p>
+			) : (
+				<ul>
+					{allArticles.reverse().map((article) => (
+						<li>
+							<article>
+								{article?.ogImage && (
+									<>
+										<img src={article?.ogImage} alt="" /> <br />
+									</>
+								)}
+								<a href={article.url}>
+									<strong>{article.ogTitle}</strong>
+								</a>
+							</article>
+						</li>
+					))}
+				</ul>
+			)
+		}
+		<p>
+			The GitBook for this project is <a
+				href="https://cll-devrel.gitbook.io/javascript-for-web3-master-class/building-a-frontend"
+				>located here!</a>
+		</p>
+	</body>
+</html>

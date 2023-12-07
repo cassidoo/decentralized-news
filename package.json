@@ -1,0 +1,19 @@
+{
+  "name": "spiffy-star",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^4.0.3",
+    "dotenv": "^16.3.1",
+    "ethers": "^6.9.0",
+    "jsdom": "^23.0.1",
+    "node-fetch": "^3.3.2"
+  }
+}
