@@ -2,7 +2,7 @@
 
 This is a repo made during a webinar with [Chainlink](https://chain.link/). The goal is to create a decentralized news feed that is pulled from Hacker News. The news feed is then displayed on a frontend.
 
-[Live site](https://main--decentralized-news.netlify.app/)
+[Live site](https://decentralized-news.netlify.app/)
 
 ## Steps
 
