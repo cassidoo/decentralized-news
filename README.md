@@ -4,6 +4,8 @@ This is a repo made during a webinar with [Chainlink](https://chain.link/). The 
 
 [Live site](https://decentralized-news.netlify.app/)
 
+[Webinar recording](https://www.youtube.com/watch?v=kqaxKuxC9lo)
+
 ## Steps
 
 [GitBook for this workshop](https://cll-devrel.gitbook.io/javascript-for-web3-master-class/building-a-frontend)
